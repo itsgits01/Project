@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body{
+            background: #272b44;
+        }
+        *{
+            margin: 0px;
+            padding: 0;
+        }
+        .main{
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            width: 350px;
+            height: 350px;
+            position: absolute;
+            left: 35%;
+            top: 20%;
+            gap: 10px;
+             
+        }
+        .box{
+          
+            height: 100px;
+            padding: 10px;
+            border: 1px solid black;
+            background-color:#2020203b;
+            border-radius: 5px;
+            box-shadow: -1px -3px 15px 2px rgb(243, 141, 243),
+                    3px 2px 15px 2px rgb(118,216,255);
+        }
+        .box:hover{
+            background-color:#64626256;
+        }
+        h1{
+            text-align: center;
+           color: white;
+           
+        }
+        #msg{
+            position: absolute;
+        font-size: 35px;
+        top: 40%;
+         left: 5%;
+         font-family: monospace;
+         box-shadow: 5px 5px 10px rgb(100, 99, 99);
+         color: rgb(61, 223, 215);
+         text-shadow: 1px 1px rgba(211, 207, 207, 0.842);
+        }
+        .active-x{
+            font-size:90px;
+            color: #21dcfdcb;
+            text-shadow: 2px 2px 10px rgb(37, 248, 255);
+            text-align: center;
+            position: relative;
+            transform: 0.4s;
+            
+        }
+        .active-o{
+            font-size:90px;
+            color: #20ffbce5;
+            text-shadow: 2px 3px 10px rgba(216, 215, 215, 0.829);
+            text-align: center;
+            position: relative;
+        }
+        .animation{
+            transition: transform 1s ease-out;
+            transform: rotateX(360deg);
+            perspective: 800;
+        }
+     
+       
+        
+    </style>
+</head>
+<body>
+    <h1>
+        TIC-TAC-TOE
+       
+    </h1>
+    <h1 id="msg">
+        play
+    </h1>
+    <div class="main">
+        <div class="box" id="b1"></div>
+        <div class="box" id="b2"></div>
+        <div class="box" id="b3"></div>
+        <div class="box" id="b4"></div>
+        <div class="box" id="b5"></div>
+        <div class="box" id="b6"></div>
+        <div class="box" id="b7"></div>
+        <div class="box" id="b8"></div>
+        <div class="box" id="b9"></div>
+    </div>
+
+    <script>
+        let boxes = document.querySelectorAll(".box");
+        let flag = 1;
+        let msg = document.getElementById("msg");
+        let win_chance =[
+            [0,1,2],
+            [3,4,5],
+            [6,7,8],
+            [0,4,8],
+            [2,4,6],
+            [0,3,6],
+            [2,5,8],
+            [1,4,7]
+        ]
+        boxes.forEach((box) => {
+            box.addEventListener('click' ,function run(){
+                console.log("clicked");
+               
+
+                if(iswin()==true || istie()==true){
+                    start();
+                    
+                }
+                if(box.innerHTML==''){
+
+                    if(flag==1){
+                        
+                        box.classList.add("active-x");
+                        box.innerHTML = 'X';
+                       
+                        flag=0;
+                    }
+                    else{
+                        
+                        box.classList.add("active-o");
+                        box.innerHTML = 'O';
+                        
+                        flag=1;
+                    }
+
+                }
+                iswin();
+                istie();
+                
+                
+            });
+        });
+
+    function iswin(){
+        for(let i=0;i<8;i++){
+            if(boxes[win_chance[i][0]].innerHTML=="X" && boxes[win_chance[i][1]].innerHTML=="X" && boxes[win_chance[i][2]].innerHTML=="X"){
+                console.log("player wins");
+                msg.innerText = "Player 'X'  won";
+                animate(boxes[win_chance[i][0]],boxes[win_chance[i][1]],boxes[win_chance[i][2]]);
+                return true;
+                
+          }
+        else if(boxes[win_chance[i][0]].innerHTML=="O" && boxes[win_chance[i][1]].innerHTML=="O" && boxes[win_chance[i][2]].innerHTML=="O"){
+                  
+                  msg.innerText = "Player 'O'  won";
+                  animate(boxes[win_chance[i][0]],boxes[win_chance[i][1]],boxes[win_chance[i][2]]);
+                  return true;
+         }
+         
+         
+               
+        }
+    }
+        function start(){
+            boxes.forEach((tile) => {
+                tile.classList.remove("active-x");
+                tile.classList.remove("active-o");
+                tile.classList.remove("animation");
+                tile.innerHTML ='';
+                msg.innerText="play";
+            });
+        }
+        function animate(a,b,c){
+            a.classList.add('animation');
+            b.classList.add('animation');
+            c.classList.add('animation');
+        }
+
+        function istie(){
+            let count=0;
+            boxes.forEach((tile) => {
+                if(tile.innerHTML!=''){
+                    count++;
+                }
+            });
+            if(count==9){
+                msg.innerText = "<--it's a tie-->";
+                
+                return true;
+            }
+        }
+       
+        
+        
+        
+      
+        
+    </script>
+</body>
+</html>
